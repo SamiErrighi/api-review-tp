@@ -5,11 +5,12 @@ var reviews = require('../controllers/reviews')
 router.route('/')
     .get(reviews.index)
     .post(reviews.create)
+    .delete(reviews.removeAll)
 ;
 
 router.route('/:id')
-    .put(reviews.update)
-    .delete(reviews.delete)
+    .get(reviews.show)
+    .delete(reviews.remove)
 ;
 
 module.exports = router;
