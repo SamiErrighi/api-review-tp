@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 
 var reviews = [
     {
@@ -32,6 +32,8 @@ exports.index = function (req, res, next) {
 * @params id
 */
 exports.create = function (req, res, next) {
+    var review = req.body;
+    reviews.push(review)
     res.json('post')
 }
 
@@ -56,13 +58,15 @@ exports.remove = function (req, res, next) {
 * @params id
 */
 exports.show = function (req, res, next) {
-    res.json(_.findWhere(reviews, {id: parseInt(req.params.id)}))
+    var review = _.find(reviews, function(review) { return review.id == req.params.id; })
+    res.json(review)
 }
 
 /*
 * remove all reviews
 */
 exports.removeAll = function (req, res, next) {
+    reviews = [];
     res.json('delete')
 }
 
