@@ -22,27 +22,44 @@ var reviews = [
 ]
 /*
 * GET ALL reviews
+* @method GET
 */
 exports.index = function (req, res, next) {
-    res.json(reviews)
+    res.status(200).json(reviews);
 }
 
 /*
 * CREATE a new reviews
+* @method POST
 * @params id
 */
 exports.create = function (req, res, next) {
     var review = req.body;
-    reviews.push(review)
-    res.json('post')
+    if (checkReview(review)) {
+        reviews.push(review);
+        res.status(201).json('created');
+    }
+
+    res.status(400).json('bad review')
 }
 
 /*
-* CREATE a new reviews
+* UPDATE a new reviews
 * @params id
 */
 exports.update = function (req, res, next) {
-    res.json('put')
+    var review = getReview(req.params.id)
+
+    if (!review) {
+        return res.status(400).json('review not found')
+    }
+
+    if(checkReview(req.body)) {
+        _.drop(reviews, review);
+        reviews.push(req.body);
+        res.status(202).json('review updated')
+    }
+    res.status(400).json('bad review')
 }
 
 /*
@@ -50,7 +67,11 @@ exports.update = function (req, res, next) {
 * @params id
 */
 exports.remove = function (req, res, next) {
-    res.json('delete')
+    var review = getReview(req.params.id)
+    if (!review) {
+        res.status(400).json('error')
+    }
+    res.status(200).json('review delete')
 }
 
 /*
@@ -58,8 +79,11 @@ exports.remove = function (req, res, next) {
 * @params id
 */
 exports.show = function (req, res, next) {
-    var review = _.find(reviews, function(review) { return review.id == req.params.id; })
-    res.json(review)
+    var review = getReview(req.params.id)
+    if(getReview(params.id)) {
+        res.status(200).json(review);
+    }
+    res.status(400).json('bad review')
 }
 
 /*
@@ -68,5 +92,17 @@ exports.show = function (req, res, next) {
 exports.removeAll = function (req, res, next) {
     reviews = [];
     res.json('delete')
+}
+
+getReview = function(id){
+    return _.find(reviews, function(review) { return review.id == id; })
+}
+
+checkReview = function(review) {
+    console.log(review)
+    if (review.name && review.name != "" && review.placeType && review.placeType != "" && review.stars && review.stars != "") {
+        return true
+    }
+    return false;
 }
 

@@ -10,6 +10,7 @@ router.route('/')
 
 router.route('/:id')
     .get(reviews.show)
+    .put(reviews.update)
     .delete(reviews.remove)
 ;
 
