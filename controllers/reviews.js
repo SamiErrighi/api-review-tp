@@ -48,18 +48,18 @@ exports.create = function (req, res, next) {
 * @params id
 */
 exports.update = function (req, res, next) {
-    var review = getReview(req.params.id)
-
+    var review = getReview(req.params.id);
     if (!review) {
         return res.status(400).json('review not found')
     }
-
-    if(checkReview(req.body)) {
-        _.drop(reviews, review);
-        reviews.push(req.body);
-        res.status(202).json('review updated')
+    if(!checkReview(req.body)) {
+        return res.status(400).json('bad review')
     }
-    res.status(400).json('bad review')
+    console.log(req.body)
+    _.drop(reviews, review);
+    reviews.push(req.body);
+
+    return res.status(204).json('review updated')
 }
 
 /*
@@ -69,9 +69,9 @@ exports.update = function (req, res, next) {
 exports.remove = function (req, res, next) {
     var review = getReview(req.params.id)
     if (!review) {
-        res.status(400).json('error')
+        res.status(404).json('error')
     }
-    res.status(200).json('review delete')
+    res.status(204).json('review delete')
 }
 
 /*
@@ -80,10 +80,12 @@ exports.remove = function (req, res, next) {
 */
 exports.show = function (req, res, next) {
     var review = getReview(req.params.id)
-    if(getReview(params.id)) {
+
+    if(getReview(req.params.id)) {
         res.status(200).json(review);
     }
-    res.status(400).json('bad review')
+
+    res.status(404).json('bad review')
 }
 
 /*
@@ -99,7 +101,7 @@ getReview = function(id){
 }
 
 checkReview = function(review) {
-    console.log(review)
+
     if (review.name && review.name != "" && review.placeType && review.placeType != "" && review.stars && review.stars != "") {
         return true
     }
