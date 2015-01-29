@@ -11,9 +11,14 @@ var api = require('./routes/api');
 var env = require('./config/env')
 var mongoose = require('mongoose');
 
-mongoose.connect(env.development.db);
 var app = express();
 
+console.log(app.get('env'))
+if (app.get('env') === 'development') {
+    mongoose.connect(env.development.db);
+}else {
+    mongoose.connect(env.production.db);
+}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
