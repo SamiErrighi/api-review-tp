@@ -3,13 +3,13 @@ User     = require('../models/user');
 
 exports.requiresLogin = function(req, res, next){
     
-    if (!req.cookies.token || !req.cookies.email) {
-        return res.json('no token found');
+    if (!req.headers.token || !req.headers.email) {
+        return res.status(400).json('not authenticate');
     }
-    passport.tokenLogin(req, req.cookies.token, req.cookies.email, function(code, message, user){
-        if (!user)
-            res.status(code);
-            return res.json(message)
+    passport.tokenLogin(req, req.headers.token, req.headers.email, function(code, message, user){
+        if (!user) {
+            return res.status(401).json(message)
+        }
         next();
     });
 }

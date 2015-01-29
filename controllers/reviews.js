@@ -17,6 +17,7 @@ exports.index = function (req, res, next) {
 * @params id
 */
 exports.create = function (req, res, next) {
+    console.log('here')
     var review = new Review(req.body);
     review.save(function(err){
         if (err) {
