@@ -4,6 +4,6 @@ module.exports = {
     },
 
     production: {
-        db: process.env
+        db: process.MONGO_STRING_CONNECTION
     }
 }
