@@ -13,10 +13,11 @@ var mongoose = require('mongoose');
 
 var app = express();
 
-console.log(app.get('env'))
+
 if (app.get('env') === 'development') {
     mongoose.connect(env.development.db);
-}else {
+}
+ if (process.env.ENV === 'HEROKU'){
     mongoose.connect(env.production.db);
 }
 // view engine setup
