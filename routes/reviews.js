@@ -1,17 +1,18 @@
 var reviews = require('../controllers/reviews')
 , express   = require('express') 
-, router    = express.Router();
+, router    = express.Router()
+, authorization = require('../config/authorization');
 
 router.route('/')
     .get(reviews.index)
-    .post(reviews.create)
-    .delete(reviews.removeAll)
+    .post(authorization.requiresLogin, reviews.create)
+    .delete(authorization.requiresLogin, reviews.removeAll)
 ;
 
 router.route('/:id')
     .get(reviews.show)
-    .put(reviews.update)
-    .delete(reviews.remove)
+    .put(authorization.requiresLogin, reviews.update)
+    .delete(authorization.requiresLogin, reviews.remove)
 ;
 
 module.exports = router;
