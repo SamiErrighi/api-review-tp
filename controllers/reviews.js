@@ -36,7 +36,7 @@ exports.update = function (req, res, next) {
         if (err) {
             return res.status(400).json('bad review')
        }
-        return res.status(202).json('created');
+        return res.status(200).json('created');
     });
 }
 
@@ -45,12 +45,12 @@ exports.update = function (req, res, next) {
 * @params id
 */
 exports.remove = function (req, res, next) {
-    Review.findByIdAndRemove(req.params.id, function(err){
+    Review.remove(req.params.id, function(err){
         console.log(err)
         if(err) {
-            return res.status(400).json('review not found');
+            return res.status(404).json('review not found');
         }
-        return res.status(204).json('review deleted');
+        return res.status(204)
     });
 }
 
@@ -73,7 +73,7 @@ exports.show = function (req, res, next) {
 */
 exports.removeAll = function (req, res, next) {
     Review.remove(function(){
-        return res.status(204).json('reviews deleted');
+        return res.status(204)
     });
 }
 
