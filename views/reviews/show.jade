@@ -1,0 +1,8 @@
+extends ../layout
+block content
+    a(href="/api/reviews") < back
+    br
+    a(href="/api/reviews/edit/#{review._id}") edit
+    p= review.name
+    p= review.placeType
+    p= review.stars

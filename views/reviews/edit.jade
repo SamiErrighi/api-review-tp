@@ -1,0 +1,10 @@
+extends ../layout
+block content
+    form(method="POST", action="/api/reviews/#{review._id}")
+        label name
+            input(type="text", value="#{review.name}" name="name")
+        label placeType
+            input(type="text", value="#{review.placeType}" name="placeType")
+        label stars
+            input(type="text", value="#{review.stars}" name="stars")
+        input(type="submit", value="Mêttre à jour")

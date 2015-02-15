@@ -1,13 +1,20 @@
 var Review = require('../models/review');
-var _ = require('lodash');
+var accepts = require('accepts');
 
 /*
 * GET ALL reviews
 * @method GET
 */
 exports.index = function (req, res, next) {
+    var accept = accepts(req);
     Review.find(function(err, reviews){
-        return res.status(200).json(reviews);
+        if(accept.type(['json', 'html']) == 'json') {
+            res.setHeader('Content-Type', 'application/json')
+            res.status(200).json(reviews);
+        }else {
+            res.setHeader('Content-Type', 'text/html')
+            res.render('reviews/index', {reviews: reviews})
+        }
     });
 }
 
@@ -23,6 +30,21 @@ exports.create = function (req, res, next) {
             res.status(400).json('bad review')
         }
         res.status(201).json('created');
+    });
+}
+
+exports.edit = function (req, res, next) {
+    var accept = accepts(req);
+    Review.findById(req.params.id, function(err, review){
+        if(err) {
+            res.status(404).send('review not found');
+        }
+        if(accept.type(['html']) == 'html') {
+            res.setHeader('Content-Type', 'text/html')
+            res.render('reviews/edit', {review: review})
+        }else {
+             res.status(404).send('no json');
+        }
     });
 }
 
@@ -59,12 +81,18 @@ exports.remove = function (req, res, next) {
 * @params id
 */
 exports.show = function (req, res, next) {
+    var accept = accepts(req);
     Review.findById(req.params.id, function(err, review){
-        console.log(review);
         if(err) {
             res.status(404).send('review not found');
         }
-        res.status(200).send(review);
+        if(accept.type(['json', 'html']) == 'json') {
+            res.setHeader('Content-Type', 'application/json')
+            res.status(200).send(review);
+        }else {
+            res.setHeader('Content-Type', 'text/html')
+            res.render('reviews/show', {review: review})
+        }
     });
 }
 

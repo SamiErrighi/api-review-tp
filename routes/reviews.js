@@ -14,4 +14,6 @@ router.route('/:id')
     .delete(reviews.remove)
 ;
 
+router.route('/edit/:id').get(reviews.edit);
+
 module.exports = router;

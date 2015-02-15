@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    ul
+        each review in reviews
+            li
+                a(href="/api/reviews/#{review._id}")
+                    span= review.name
+                    span= review.placeType
+                    - var n = 0
+                    while n < review.stars
+                        img(src="/images/star.png" width="20")
+                        - var n = n+1
+
+
